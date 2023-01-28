@@ -1,0 +1,93 @@
+body {
+  background-color: bisque;
+  position: relative;
+  height: 100vh;
+}
+
+.hide {
+  display: none;
+}
+
+.page-title {
+  text-align: center;
+}
+
+.form {
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%);
+  display: flex;
+  flex-direction: column;
+}
+.form .form-item {
+  text-decoration: none;
+  font-size: larger;
+}
+.form .form-input {
+  border: solid 2px chocolate;
+  width: 200px;
+  height: 50px;
+}
+.form .form-button {
+  border: solid 2px chocolate;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  left: 50%;
+  position: relative;
+  transform: translate(-50%);
+  margin: 10px 0;
+}
+
+.ball-container {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.ball-container .ball {
+  border: solid 2px chocolate;
+  background-color: burlywood;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 10px;
+  font-size: x-small;
+}
+.ball-container .ball:hover {
+  background-color: coral;
+}
+.ball-container .ball h1, .ball-container .ball p {
+  margin: 0;
+}
+.ball-container .small-ball {
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  font-size: x-small;
+  margin: 10px 3px;
+}
+.ball-container .small-ball a {
+  text-decoration: none;
+}
+.ball-container .small-ball--open, .ball-container .small-ball--add {
+  background-color: lightgreen;
+  border: solid green 2px;
+}
+.ball-container .small-ball--edit {
+  background-color: yellow;
+  border: solid orange 2px;
+}
+.ball-container .small-ball--view {
+  background-color: cyan;
+  border: solid blue 2px;
+}
+.ball-container .small-ball--delete {
+  background-color: lightcoral;
+  border: solid red 2px;
+}
+.ball-container .small-form {
+  width: 120px;
+}/*# sourceMappingURL=templates.css.map */

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/templates.css}">
+    <title>Transport Company</title>
+</head>
+<body>
+    <form class="form" th:action="@{/}" method="post">
+        <input class="form-item form-input" type="text" name="name" placeholder="name" required>
+        <button class="form-item form-button" type="submit">Add Company</button>
+    </form>
+    <div class="ball-container">
+        <div class="item-container" th:each="company: ${companyList}">
+            <button class="ball">
+                <h1 th:text="${company.name}"/>
+            </button>
+            <div class="ball-menu hide">
+                <button class="small-ball small-ball--open"><a th:href="@{'/open-company/' + ${company.name}}">open</a></button>
+                <button class="small-ball small-ball--edit">edit</button>
+                <button class="small-ball small-ball--delete"><a href="">delete</a></button>
+            </div>
+            <form class="small-form hide" th:action="@{'/edit-company/' + ${company.name}}" method="post">
+                <input class="form-item form-input" type="text" name="name" placeholder="name" required>
+                <button class="form-item form-button" type="submit">Save</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    let companies = document.querySelectorAll(".item-container");
+    companies.forEach(company => {
+        let ball_menu = company.querySelector(".ball-menu");
+        let ball =  company.querySelector(".ball");
+        let ball_edit = company.querySelector(".small-ball--edit");
+        let small_form = company.querySelector(".small-form");
+        ball.addEventListener("click", () => {
+            ball_menu.classList.toggle("hide");
+        });
+        ball_edit.addEventListener("click", () => {
+            small_form.classList.toggle("hide");
+        });
+    });
+</script>
+</html>

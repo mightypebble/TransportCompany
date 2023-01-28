@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/templates.css}">
+    <title>Transport Company</title>
+</head>
+<body>
+    <h1 class="page-title" th:text="${company.name}"></h1>
+    <div class="ball-container">
+        <div class="item-container">
+            <button class="ball">
+                <h1 th:text="${companyClients.size()}"/>
+                <h1>Clients</h1>
+            </button>
+            <div class="ball-menu hide">
+                <button class="small-ball small-ball--add">add</button>
+                <button class="small-ball small-ball--view"><a th:href="@{'/view-company-clients/' + ${company.name}}">view</a></button>
+            </div>
+            <form class="small-form hide" th:action="@{'/add-client/' + ${company.name}}" method="post">
+                <input class="form-item form-input" type="text" name="name" placeholder="name" required>
+                <input class="form-item form-input" type="text" name="phone" placeholder="phone number" required>
+                <input class="form-item form-input" type="text" name="UCN" placeholder="UCN" required>
+                <input class="form-item form-input hide" type="text" name="companyName" th:value="${company.name}">
+                <button class="form-item form-button" type="submit">Add Client</button>
+            </form>
+        </div>
+        <div class="item-container">
+            <button class="ball">
+                <h1 th:text="${companyVehicles.size()}"/>
+                <h1>Vehicles</h1>
+            </button>
+            <div class="ball-menu hide">
+                <button class="small-ball small-ball--add">add</button>
+                <button class="small-ball small-ball--view"><a th:href="@{'/view-company-vehicles/' + ${company.name}}">view</a></button>
+            </div>
+            <form class="small-form hide" th:action="@{'/add-vehicle/' + ${company.name}}" method="post">
+                <input class="form-item form-input" type="text" name="brand" placeholder="brand" required>
+                <input class="form-item form-input" type="text" name="category" placeholder="category" required>
+                <input class="form-item form-input" type="text" name="registrationNumber" placeholder="registration" required>
+                <input class="form-item form-input hide" type="text" name="companyName" th:value="${company.name}">
+                <button class="form-item form-button" type="submit">Add vehicle</button>
+            </form>
+        </div>
+        <div class="item-container">
+            <button class="ball">
+                <h1 th:text="${companyEmployees.size()}"/>
+                <h1>Employees</h1>
+            </button>
+            <div class="ball-menu hide">
+                <button class="small-ball small-ball--add">add</button>
+                <button class="small-ball small-ball--view"><a th:href="@{'/view-company-employees/' + ${company.name}}">view</a></button>
+            </div>
+            <form class="small-form hide" th:action="@{'/add-employee/' + ${company.name}}" method="post">
+                <input class="form-item form-input" type="text" name="name" placeholder="name" required>
+                <input class="form-item form-input" type="text" name="phone" placeholder="phone number" required>
+                <input class="form-item form-input" type="text" name="UCN" placeholder="UCN" required>
+                <input class="form-item form-input hide" type="text" name="companyName" th:value="${company.name}">
+                <button class="form-item form-button" type="submit">Add employee</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    let containers = document.querySelectorAll(".item-container");
+    containers.forEach(container => {
+        let toggleForm = container.querySelector(".small-ball--add");
+        let toggleMenu = container.querySelector(".ball");
+        let menu = container.querySelector(".ball-menu");
+        let form = container.querySelector(".small-form");
+        toggleForm.addEventListener("click", () => {
+            form.classList.toggle("hide");
+        });
+        toggleMenu.addEventListener("click", () => {
+            menu.classList.toggle("hide");
+        })
+    });
+</script>
+</html>

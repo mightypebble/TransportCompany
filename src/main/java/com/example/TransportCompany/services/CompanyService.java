@@ -9,9 +9,11 @@ import java.util.stream.Collectors;
 import com.example.TransportCompany.dtos.CompanyRegisterDto;
 import com.example.TransportCompany.entities.*;
 import com.example.TransportCompany.repositories.CompanyRepository;
+import com.example.TransportCompany.exceptions.BadRequestException;
 
 @Service
 public class CompanyService {
+	public static final String COMPANY_ALREADY_EXISTS = "Company with that name already exists!";
 
 	private final CompanyRepository companyRepository;
 
@@ -23,6 +25,8 @@ public class CompanyService {
     public CompanyEntity register(CompanyRegisterDto companyRegisterDto) {
 
 		String name = companyRegisterDto.getName();
+
+		if(this.companyRepository.existsByName(name)) throw new BadRequestException(COMPANY_ALREADY_EXISTS);
 
 		CompanyEntity company = new CompanyEntity();
 		company.setName(name);
@@ -41,7 +45,8 @@ public class CompanyService {
 		List<CompanyEntity> companyList = companyRepository.findAll().stream()
                 .collect(Collectors.toUnmodifiableList());
 		
-		String newName = companyRegisterDto.getName();	
+		String newName = companyRegisterDto.getName();
+		if(this.companyRepository.existsByName(name)) throw new BadRequestException(COMPANY_ALREADY_EXISTS);
 
 		for (CompanyEntity company : companyList) {
 			if (company.getName().equals(name)) {
@@ -50,6 +55,10 @@ public class CompanyService {
 				return;
 			}
 		}
+	}
+
+	public void deleteCompany(String name) {
+		this.companyRepository.delete(companyRepository.findByName(name));
 	}
 
 }

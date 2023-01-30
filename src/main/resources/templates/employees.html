@@ -18,17 +18,28 @@
                 <p th:text="${employee.phone}"/>
                 <p>UCN:</p>
                 <p th:text="${employee.UCN}"/>
+                <p>category:</p>
+                <p th:text="${employee.vehicleCategory}"/>
             </button>
             <div class="ball-menu hide">
                 <button class="small-ball small-ball--edit">edit</button>
                 <button class="small-ball small-ball--delete">
-                    <a th:href="@{'/delete-employee/' + ${employee.name} + '/' + ${company.name}}">delete</a>
+                    <a th:href="@{'/delete-employee/' + ${employee.id} + '/' + ${company.name}}">delete</a>
                 </button>
             </div>
-            <form class="small-form hide" th:action="@{'/edit-employee/' + ${employee.name} + '/' + ${company.name}}" method="post">
+            <form class="small-form hide" th:action="@{'/edit-employee/' + ${employee.id} + '/' + ${company.name}}" method="post">
                 <input class="form-item form-input" type="text" name="name" placeholder="name" required>
                 <input class="form-item form-input" type="text" name="phone" placeholder="phone number" required>
                 <input class="form-item form-input" type="text" name="UCN" placeholder="UCN" required>
+                <select class="form-item form-input" name="vehicleCategory">
+                    <option selected value="" disabled>Select category</option>
+                    <option value="B1">B1</option>
+                    <option value="C1">C1</option>
+                    <option value="C">C</option>
+                    <option value="CE">CE</option>
+                    <option value="D1">D1</option>
+                    <option value="D">D</option>
+                </select>
                 <button class="form-item form-button" type="submit">Save</button>
             </form>
         </div>

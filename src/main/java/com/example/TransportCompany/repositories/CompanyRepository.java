@@ -13,4 +13,6 @@ public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
 
     CompanyEntity findByName(String name);
 
+    boolean existsByName(String name);
+
 }

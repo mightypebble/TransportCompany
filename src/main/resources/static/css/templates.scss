@@ -68,6 +68,11 @@ body{
         }
     }
 
+    .large-ball{
+        width: 175px;
+        height: 230px;
+    }
+
     .small-ball{
         width: 39px;
         height: 39px;
@@ -103,4 +108,14 @@ body{
     .small-form{
         width: 120px;
     }
+}
+
+.delivery-info{
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-auto-rows: min-content;
+    width: min-content;
+    left: 50%;
+    position: relative;
+    transform: translate(-50%);
 }

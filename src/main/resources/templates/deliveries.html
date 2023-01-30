@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/templates.css}">
+    <title>Transport Company</title>
+</head>
+<body>
+    <h1 class="page-title" th:text="${company.name} + ' Deliveries'"></h1>
+    <div class="ball-container">
+        <div class="item-container" th:each="delivery: ${companyDeliveries}">
+            <button class="ball large-ball">
+                <h1 th:text="${delivery.client.name}"/>
+                <div class="delivery-info">
+                    <p>client UCN:</p>
+                    <p th:text="${delivery.client.UCN}"/>
+                    <p>type:</p>
+                    <p th:text="${delivery.type}"></p>
+                    <p>weight:</p>
+                    <p th:text="${delivery.weight}"/>
+                    <p>origin:</p>
+                    <p th:text="${delivery.origin}"/>
+                    <p>destination:</p>
+                    <p th:text="${delivery.destination}"/>
+                    <p>start date:</p>
+                    <p th:text="${delivery.startDate}"/>
+                    <p>finish date:</p>
+                    <p th:text="${delivery.finishDate}"/>
+                    <p>price:</p>
+                    <p th:text="${delivery.price}"/>
+                    <p>is paid for:</p>
+                    <p th:text="${delivery.isPaid}"></p>
+                    <p>is delivered:</p>
+                    <p th:text="${delivery.isDelivered}"></p>
+                </div>
+            </button>
+            <div class="ball-menu hide">
+                <button class="small-ball small-ball--edit">edit</button>
+                <button class="small-ball small-ball--delete">
+                    <a th:href="@{'/delete-delivery/' + ${delivery.id} + '/' + ${company.name}}">delete</a>
+                </button>
+            </div>
+            <form class="small-form hide" th:action="@{'/edit-delivery/' + ${delivery.id} + '/' + ${company.name}}" method="post">
+                <select class="form-item form-input" name="type" required>
+                    <option selected value="" disabled>Select type</option>
+                    <option value="person(s)">person(s)</option>
+                    <option value="package(s)">package(s)</option>
+                </select>
+                <input class="form-item form-input" type="text" th:value="${delivery.weight}" name="weight" placeholder="weight" required>
+                <input class="form-item form-input" type="text" th:value="${delivery.origin}" name="origin" placeholder="origin" required>
+                <input class="form-item form-input" type="text" th:value="${delivery.destination}" name="destination" placeholder="destination" required>
+                <input class="form-item form-input" type="text" th:value="${delivery.startDate}" name="startDate" placeholder="strart date" required>
+                <input class="form-item form-input" type="text" th:value="${delivery.finishDate}" name="finishDate" placeholder="finish date" required>
+                <input class="form-item form-input" type="text" th:value="${delivery.price}" name="price" placeholder="price" required>
+                <input type="checkbox" name="isPaid" value="true">
+                <input type="checkbox" name="isDelivered" value="true">
+                <input class="form-item form-input hide" type="text" name="companyName" th:value="${company.name}">
+                <button class="form-item form-button" type="submit">save</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    let companies = document.querySelectorAll(".item-container");
+    companies.forEach(company => {
+        let ball_menu = company.querySelector(".ball-menu");
+        let ball =  company.querySelector(".ball");
+        let ball_edit = company.querySelector(".small-ball--edit");
+        let small_form = company.querySelector(".small-form");
+        ball.addEventListener("click", () => {
+            ball_menu.classList.toggle("hide");
+        });
+        ball_edit.addEventListener("click", () => {
+            small_form.classList.toggle("hide");
+        });
+    });
+</script>
+</html>

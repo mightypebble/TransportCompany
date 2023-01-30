@@ -12,11 +12,13 @@ import com.example.TransportCompany.dtos.VehicleRegisterDto;
 import com.example.TransportCompany.entities.ClientEntity;
 import com.example.TransportCompany.entities.CompanyEntity;
 import com.example.TransportCompany.entities.VehicleEntity;
+import com.example.TransportCompany.exceptions.BadRequestException;
 import com.example.TransportCompany.repositories.ClientRepository;
 import com.example.TransportCompany.repositories.VehicleRepository;
 
 @Service
 public class VehicleService {
+    public static final String VEHICLE_ALREADY_EXISTS = "Vehicle with that registration number already exists!"; 
 
 	private final VehicleRepository vehicleRepository;
     private final CompanyService companyService;
@@ -32,6 +34,7 @@ public class VehicleService {
         String brand = vehicleRegisterDto.getBrand();
         String category = vehicleRegisterDto.getCategory();
         String registration = vehicleRegisterDto.getRegistrationNumber();
+        if(this.vehicleRepository.existsByRegistrationNumber(registration)) throw new BadRequestException(VEHICLE_ALREADY_EXISTS);
         CompanyEntity company = (CompanyEntity) companyService.getCompanyByName(vehicleRegisterDto.getCompanyName());
 
         VehicleEntity vehicle = new VehicleEntity();
@@ -52,6 +55,7 @@ public class VehicleService {
 		String brand = vehicleRegisterDto.getBrand();
         String category = vehicleRegisterDto.getCategory();
         String newRegistration = vehicleRegisterDto.getRegistrationNumber();
+        if(this.vehicleRepository.existsByRegistrationNumber(registration)) throw new BadRequestException(VEHICLE_ALREADY_EXISTS);
 
 		for (VehicleEntity vehicle : vehicleList) {
 			if (vehicle.getRegistrationNumber().equals(registration)) {

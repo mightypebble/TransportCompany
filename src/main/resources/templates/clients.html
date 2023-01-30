@@ -22,10 +22,10 @@
             <div class="ball-menu hide">
                 <button class="small-ball small-ball--edit">edit</button>
                 <button class="small-ball small-ball--delete">
-                    <a th:href="@{'/delete-client/' + ${client.name} + '/' + ${company.name}}">delete</a>
+                    <a th:href="@{'/delete-client/' + ${client.id} + '/' + ${company.name}}">delete</a>
                 </button>
             </div>
-            <form class="small-form hide" th:action="@{'/edit-client/' + ${client.name} + '/' + ${company.name}}" method="post">
+            <form class="small-form hide" th:action="@{'/edit-client/' + ${client.id} + '/' + ${company.name}}" method="post">
                 <input class="form-item form-input" type="text" name="name" placeholder="name" required>
                 <input class="form-item form-input" type="text" name="phone" placeholder="phone number" required>
                 <input class="form-item form-input" type="text" name="UCN" placeholder="UCN" required>

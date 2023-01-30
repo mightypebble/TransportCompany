@@ -25,15 +25,12 @@ public class VehicleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @Column(name = "brand")
     private String brand;
     
-    @NotNull
     @Column(name = "category")
     private String category;
 
-    @NotNull
     @Column(name = "reg_number")
     private String registrationNumber;
 

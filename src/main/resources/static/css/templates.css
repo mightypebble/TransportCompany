@@ -62,6 +62,10 @@ body {
 .ball-container .ball h1, .ball-container .ball p {
   margin: 0;
 }
+.ball-container .large-ball {
+  width: 175px;
+  height: 230px;
+}
 .ball-container .small-ball {
   width: 39px;
   height: 39px;
@@ -90,4 +94,17 @@ body {
 }
 .ball-container .small-form {
   width: 120px;
+}
+
+.delivery-info {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-auto-rows: -webkit-min-content;
+  grid-auto-rows: min-content;
+  width: -webkit-min-content;
+  width: -moz-min-content;
+  width: min-content;
+  left: 50%;
+  position: relative;
+  transform: translate(-50%);
 }/*# sourceMappingURL=templates.css.map */

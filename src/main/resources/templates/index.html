@@ -21,7 +21,7 @@
             <div class="ball-menu hide">
                 <button class="small-ball small-ball--open"><a th:href="@{'/open-company/' + ${company.name}}">open</a></button>
                 <button class="small-ball small-ball--edit">edit</button>
-                <button class="small-ball small-ball--delete"><a href="">delete</a></button>
+                <button class="small-ball small-ball--delete"><a th:href="@{'/delete-company/' + ${company.name}}">delete</a></button>
             </div>
             <form class="small-form hide" th:action="@{'/edit-company/' + ${company.name}}" method="post">
                 <input class="form-item form-input" type="text" name="name" placeholder="name" required>

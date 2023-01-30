@@ -27,8 +27,16 @@
             </div>
             <form class="small-form hide" th:action="@{'/edit-vehicle/' + ${vehicle.registrationNumber} + '/' + ${company.name}}" method="post">
                 <input class="form-item form-input" type="text" name="brand" placeholder="brand" required>
-                <input class="form-item form-input" type="text" name="category" placeholder="category" required>
                 <input class="form-item form-input" type="text" name="registrationNumber" placeholder="registration" required>
+                <select class="form-item form-input" name="category" required>
+                    <option selected value="" disabled>Select category</option>
+                    <option value="B1">B1</option>
+                    <option value="C1">C1</option>
+                    <option value="C">C</option>
+                    <option value="CE">CE</option>
+                    <option value="D1">D1</option>
+                    <option value="D">D</option>
+                </select>
                 <button class="form-item form-button" type="submit">Save</button>
             </form>
         </div>

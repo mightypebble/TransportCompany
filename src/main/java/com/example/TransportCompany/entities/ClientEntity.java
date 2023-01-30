@@ -1,5 +1,7 @@
 package com.example.TransportCompany.entities;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -18,27 +20,27 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "customers")
+@Table(name = "clients")
 public class ClientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @Column(name = "name")
     private String name;
 
-    @NotNull
     @Column(name = "phone_number")
     private String phone;
 
-    @NotNull
     @Column(name = "UCN")
     private String UCN;
 
     @OneToOne
     @JoinColumn(name = "company", nullable = false)
     private CompanyEntity company;
+
+    // @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private List<Delivery> deliveries;
     
 }

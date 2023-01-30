@@ -25,17 +25,17 @@ public class EmployeeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @Column(name = "name")
     private String name;
 
-    @NotNull
     @Column(name = "phone_number")
     private String phone;
 
-    @NotNull
     @Column(name = "UCN")
     private String UCN;
+
+    @Column(name = "vehicle_category")
+    private String vehicleCategory;
 
     @OneToOne
     @JoinColumn(name = "company", nullable = false)

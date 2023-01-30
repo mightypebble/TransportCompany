@@ -27,14 +27,19 @@ public class CompanyEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "company")
-    private List<ClientEntity> customers; // change to client
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClientEntity> clients;
 
-    @OneToMany(mappedBy = "company")
-    private List<ClientEntity> vehicles;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VehicleEntity> vehicles;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EmployeeEntity> employees;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Delivery> deliveries;
 }
 

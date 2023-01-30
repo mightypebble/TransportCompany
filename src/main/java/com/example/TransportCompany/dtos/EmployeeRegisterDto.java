@@ -20,5 +20,8 @@ public class EmployeeRegisterDto {
     private String UCN;
 
     @NotNull
+    private String vehicleCategory;
+
+    @NotNull
     private String companyName;
 }

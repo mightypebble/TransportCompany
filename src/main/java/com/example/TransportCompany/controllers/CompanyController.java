@@ -13,12 +13,14 @@ import java.util.stream.Collectors;
 
 import com.example.TransportCompany.dtos.ClientRegisterDto;
 import com.example.TransportCompany.dtos.CompanyRegisterDto;
+import com.example.TransportCompany.dtos.DeliveryDto;
 import com.example.TransportCompany.dtos.EmployeeRegisterDto;
 import com.example.TransportCompany.dtos.VehicleRegisterDto;
 import com.example.TransportCompany.entities.*;
 import com.example.TransportCompany.repositories.CompanyRepository;
 import com.example.TransportCompany.services.ClientService;
 import com.example.TransportCompany.services.CompanyService;
+import com.example.TransportCompany.services.DeliveryService;
 import com.example.TransportCompany.services.EmployeeService;
 import com.example.TransportCompany.services.VehicleService;
 
@@ -30,15 +32,17 @@ public class CompanyController {
     private final ClientService clientService;
     private final VehicleService vehicleService;
     private final EmployeeService employeeService;
+    private final DeliveryService deliveryService;
 
     @Autowired
     public CompanyController(CompanyService companyService, CompanyRepository companyRepository,
-    ClientService clientService, VehicleService vehicleService, EmployeeService employeeService) {
+    ClientService clientService, VehicleService vehicleService, EmployeeService employeeService, DeliveryService deliveryService) {
         this.companyService = companyService;
         this.companyRepository = companyRepository;
         this.clientService = clientService;
         this.vehicleService = vehicleService;
         this.employeeService = employeeService;
+        this.deliveryService = deliveryService;
     }
     
     @RequestMapping("/")
@@ -66,6 +70,13 @@ public class CompanyController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = "/delete-company/{name}")
+    public String deleteCompany(@PathVariable String name) {
+        companyService.deleteCompany(name);
+
+        return "redirect:/";
+    }
+
     @RequestMapping(value = "/open-company/{name}")
     public String openCompany(Model model, @PathVariable String name) {
         CompanyEntity company = companyService.getCompanyByName(name);
@@ -84,12 +95,20 @@ public class CompanyController {
         for (EmployeeEntity employee : employeeList) {
             if(employee.getCompany().getId() == company.getId()) companyEmployees.add(employee);
         }
+        List<Delivery> deliveryList = deliveryService.getDeliveries();
+        List<Delivery> companyDeliveries = new ArrayList<Delivery>();
+        for (Delivery employee : deliveryList) {
+            if(employee.getCompany().getId() == company.getId()) companyDeliveries.add(employee);
+        }
         model.addAttribute("company", company);
         model.addAttribute("companyClients", companyClients);
         model.addAttribute("companyVehicles", companyVehicles);
         model.addAttribute("companyEmployees", companyEmployees);
+        model.addAttribute("companyDeliveries", companyDeliveries);
         return "company";
     }
+
+    //CLIENTS
 
     @RequestMapping(value = "/view-company-clients/{name}")
     public String openCompanyClients(Model model, @PathVariable String name) {
@@ -112,18 +131,20 @@ public class CompanyController {
         return "redirect:/open-company/{name}";
     }
 
-    @RequestMapping(value = "/edit-client/{name}/{companyName}", method = RequestMethod.POST)
-    public String updateClient(ClientRegisterDto clientRegisterDto, @PathVariable String name) {
-        clientService.updateClient(clientRegisterDto, name);
+    @RequestMapping(value = "/edit-client/{id}/{companyName}", method = RequestMethod.POST)
+    public String updateClient(ClientRegisterDto clientRegisterDto, @PathVariable Long id) {
+        clientService.updateClient(clientRegisterDto, id);
         return "redirect:/view-company-clients/{companyName}";
     }
 
-    @RequestMapping(value = "/delete-client/{name}/{companyName}")
-    public String deleteClient(@PathVariable String name) {
-        clientService.deleteClient(name);
+    @RequestMapping(value = "/delete-client/{id}/{companyName}")
+    public String deleteClient(@PathVariable Long id) {
+        clientService.deleteClient(id);
 
         return "redirect:/view-company-clients/{companyName}";
     }
+
+    // VEHICLES
 
     @RequestMapping(value = "/view-company-vehicles/{name}")
     public String openCompanyVehicles(Model model, @PathVariable String name) {
@@ -159,6 +180,8 @@ public class CompanyController {
         return "redirect:/view-company-vehicles/{companyName}";
     }
 
+    // EMPLOYEES
+
     @RequestMapping(value = "/view-company-employees/{name}")
     public String openCompanyEmployees(Model model, @PathVariable String name) {
         CompanyEntity company = companyService.getCompanyByName(name);
@@ -180,16 +203,51 @@ public class CompanyController {
         return "redirect:/open-company/{name}";
     }
 
-    @RequestMapping(value = "/edit-employee/{name}/{companyName}", method = RequestMethod.POST)
-    public String updateEmployee(EmployeeRegisterDto employeeRegisterDto, @PathVariable String name) {
-        employeeService.updateEmployee(employeeRegisterDto, name);
+    @RequestMapping(value = "/edit-employee/{id}/{companyName}", method = RequestMethod.POST)
+    public String updateEmployee(EmployeeRegisterDto employeeRegisterDto, @PathVariable Long id) {
+        employeeService.updateEmployee(employeeRegisterDto, id);
         return "redirect:/view-company-employees/{companyName}";
     }
 
-    @RequestMapping(value = "/delete-employee/{name}/{companyName}")
-    public String deleteEmployee(@PathVariable String name) {
-        employeeService.deleteEmployee(name);
+    @RequestMapping(value = "/delete-employee/{id}/{companyName}")
+    public String deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
 
         return "redirect:/view-company-employees/{companyName}";
+    }
+
+    // DELIVERIES
+
+    @RequestMapping(value = "/view-company-deliveries/{name}")
+    public String openCompanyDeliveries(Model model, @PathVariable String name) {
+        CompanyEntity company = companyService.getCompanyByName(name);
+        List<Delivery> deliveryList = deliveryService.getDeliveries();
+        List<Delivery> companyDeliveries = new ArrayList<Delivery>();
+        for (Delivery delivery : deliveryList) {
+            if(delivery.getCompany().getId() == company.getId()) companyDeliveries.add(delivery);
+        }
+        model.addAttribute("company", company);
+        model.addAttribute("companyDeliveries", companyDeliveries);
+
+        return "deliveries";
+    }
+
+    @RequestMapping(value="/add-delivery/{name}", method=RequestMethod.POST)
+    public String addDelivery(DeliveryDto deliveryToRegister) {
+        this.deliveryService.register(deliveryToRegister);
+        return "redirect:/open-company/{name}";
+    }
+
+    @RequestMapping(value = "/edit-delivery/{id}/{companyName}", method = RequestMethod.POST)
+    public String updateDelivery(DeliveryDto deliveryDto, @PathVariable Long id) {
+        deliveryService.updateDelivery(deliveryDto, id);
+        return "redirect:/view-company-deliveries/{companyName}";
+    }
+
+    @RequestMapping(value = "/delete-delivery/{id}/{companyName}")
+    public String deleteDelivery(@PathVariable Long id) {
+        deliveryService.deleteDelivery(id);
+
+        return "redirect:/view-company-deliveries/{companyName}";
     }
 }

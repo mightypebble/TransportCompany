@@ -11,18 +11,22 @@ import com.example.TransportCompany.entities.CompanyEntity;
 import com.example.TransportCompany.entities.EmployeeEntity;
 import com.example.TransportCompany.exceptions.BadRequestException;
 import com.example.TransportCompany.repositories.EmployeeRepository;
+import com.example.TransportCompany.repositories.VehicleRepository;
 
 @Service
 public class EmployeeService {
     public static final String EMPLOYEE_ALREADY_EXISTS = "Employee already exists!";
+    public static final String EMPLOYEE_HAS_VEHICLE = "Driver still attached to vehicle!";
 
 	private final EmployeeRepository employeeRepository;
     private final CompanyService companyService;
+    private final VehicleRepository vehicleRepository;
 
 	@Autowired
-	public EmployeeService(EmployeeRepository employeeRepository, CompanyService companyService) {
+	public EmployeeService(EmployeeRepository employeeRepository, CompanyService companyService, VehicleRepository vehicleRepository) {
 		this.employeeRepository = employeeRepository;
         this.companyService = companyService;
+        this.vehicleRepository = vehicleRepository;
 	}
 
     public EmployeeEntity register(EmployeeRegisterDto employeeRegisterDto) {
@@ -68,6 +72,9 @@ public class EmployeeService {
 	}
 
     public void deleteEmployee(Long id) {
+        // if(vehicleRepository.getByDriver(employeeRepository.getReferenceById(id)) != null) {
+        //     throw new BadRequestException(EMPLOYEE_HAS_VEHICLE);
+        // }
         this.employeeRepository.deleteById(id);
     }
 
@@ -75,6 +82,12 @@ public class EmployeeService {
         List<EmployeeEntity> employee = employeeRepository.findAll().stream().collect(Collectors.toUnmodifiableList());
 
         return employee;
+    }
+
+    public EmployeeEntity getEmployeeByUCN(String employeeUCN) {
+        EmployeeEntity driver = employeeRepository.findByUCN(employeeUCN);
+
+        return driver;
     }
 
 }

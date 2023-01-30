@@ -26,9 +26,9 @@
                 </button>
             </div>
             <form class="small-form hide" th:action="@{'/edit-vehicle/' + ${vehicle.registrationNumber} + '/' + ${company.name}}" method="post">
-                <input class="form-item form-input" type="text" name="brand" placeholder="brand" required>
-                <input class="form-item form-input" type="text" name="registrationNumber" placeholder="registration" required>
-                <select class="form-item form-input" name="category" required>
+                <input class="form-item form-input" th:value="${vehicle.brand}" type="text" name="brand" placeholder="brand" required>
+                <input class="form-item form-input" th:value="${vehicle.registrationNumber}" type="text" name="registrationNumber" placeholder="registration" required>
+                <select class="form-item form-input" th:value="${vehicle.category}" name="category" required>
                     <option selected value="" disabled>Select category</option>
                     <option value="B1">B1</option>
                     <option value="C1">C1</option>
@@ -36,6 +36,12 @@
                     <option value="CE">CE</option>
                     <option value="D1">D1</option>
                     <option value="D">D</option>
+                </select>
+                <select class="form-item form-input" name="employeeUCN" required>
+                    <option selected value="" disabled>Select driver</option>
+                    <div th:each="driver : ${companyEmployees}">
+                        <option th:text="${driver.name} + ' ' + ${driver.UCN}" th:value="${driver.UCN}"></option>
+                    </div>
                 </select>
                 <button class="form-item form-button" type="submit">Save</button>
             </form>

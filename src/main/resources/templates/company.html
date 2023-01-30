@@ -48,6 +48,12 @@
                     <option value="D1">D1</option>
                     <option value="D">D</option>
                 </select>
+                <select class="form-item form-input" name="employeeUCN" required>
+                    <option selected value="" disabled>Select driver</option>
+                    <div th:each="driver : ${companyEmployees}">
+                        <option th:text="${driver.name} + ' ' + ${driver.UCN}" th:value="${driver.UCN}"></option>
+                    </div>
+                </select>
                 <input class="form-item form-input hide" type="text" name="companyName" th:value="${company.name}">
                 <button class="form-item form-button" type="submit">Add vehicle</button>
             </form>

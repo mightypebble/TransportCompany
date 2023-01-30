@@ -37,5 +37,9 @@ public class VehicleEntity {
     @OneToOne
     @JoinColumn(name = "company", nullable = false)
     private CompanyEntity company;
+
+    @OneToOne
+    @JoinColumn(name = "driver", nullable = false)
+    private EmployeeEntity driver;
     
 }

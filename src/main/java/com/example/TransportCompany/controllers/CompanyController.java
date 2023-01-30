@@ -72,7 +72,18 @@ public class CompanyController {
 
     @RequestMapping(value = "/delete-company/{name}")
     public String deleteCompany(@PathVariable String name) {
-        companyService.deleteCompany(name);
+        CompanyEntity company = companyService.getCompanyByName(name);
+        List<Delivery> deliveryList = deliveryService.getDeliveries();
+        List<Delivery> companyDeliveries = new ArrayList<Delivery>();
+        for (Delivery delivery : deliveryList) {
+            if(delivery.getCompany().getId() == company.getId()) companyDeliveries.add(delivery);
+        }
+        List<VehicleEntity> vehicleList = vehicleService.getVehicles();
+        List<VehicleEntity> companyVehicles = new ArrayList<VehicleEntity>();
+        for (VehicleEntity vehicle : vehicleList) {
+            if(vehicle.getCompany().getId() == company.getId()) companyVehicles.add(vehicle);
+        }
+        companyService.deleteCompany(name, companyDeliveries, companyVehicles);
 
         return "redirect:/";
     }
@@ -97,8 +108,8 @@ public class CompanyController {
         }
         List<Delivery> deliveryList = deliveryService.getDeliveries();
         List<Delivery> companyDeliveries = new ArrayList<Delivery>();
-        for (Delivery employee : deliveryList) {
-            if(employee.getCompany().getId() == company.getId()) companyDeliveries.add(employee);
+        for (Delivery delivery : deliveryList) {
+            if(delivery.getCompany().getId() == company.getId()) companyDeliveries.add(delivery);
         }
         model.addAttribute("company", company);
         model.addAttribute("companyClients", companyClients);
@@ -154,7 +165,13 @@ public class CompanyController {
         for (VehicleEntity vehicle : vehicleList) {
             if(vehicle.getCompany().getId() == company.getId()) companyVehicles.add(vehicle);
         }
+        List<EmployeeEntity> employeeList = employeeService.getEmployees();
+        List<EmployeeEntity> companyEmployees = new ArrayList<EmployeeEntity>();
+        for (EmployeeEntity employee : employeeList) {
+            if(employee.getCompany().getId() == company.getId()) companyEmployees.add(employee);
+        }
         model.addAttribute("company", company);
+        model.addAttribute("companyEmployees", companyEmployees);
         model.addAttribute("companyVehicles", companyVehicles);
 
         return "vehicles";

@@ -14,6 +14,8 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> 
 
     EmployeeEntity findByName(String name);
 
+    EmployeeEntity findByUCN(String name);
+
     boolean existsByPhoneOrUCN(String phone, String UCN);
 
 }

@@ -12,18 +12,22 @@ import com.example.TransportCompany.entities.ClientEntity;
 import com.example.TransportCompany.entities.CompanyEntity;
 import com.example.TransportCompany.exceptions.BadRequestException;
 import com.example.TransportCompany.repositories.ClientRepository;
+import com.example.TransportCompany.repositories.DeliveryRepository;
 
 @Service
 public class ClientService {
     public static final String CLIENT_ALREADY_EXISTS = "Client already exists!";
+    public static final String CLIENT_HAS_DELIVERIES = "Client still has deliveries that need to be deleted!";
 
 	private final ClientRepository clientRepository;
     private final CompanyService companyService;
+    private final DeliveryRepository deliveryRepository;
 
 	@Autowired
-	public ClientService(ClientRepository clientRepository, CompanyService companyService) {
+	public ClientService(ClientRepository clientRepository, CompanyService companyService, DeliveryRepository deliveryRepository) {
 		this.clientRepository = clientRepository;
         this.companyService = companyService;
+        this.deliveryRepository = deliveryRepository;
 	}
 
     public ClientEntity register(ClientRegisterDto clientRegisterDto) {
@@ -71,6 +75,9 @@ public class ClientService {
 	}
 
     public void deleteClient(Long id) {
+        if(deliveryRepository.getByClient(clientRepository.getReferenceById(id)) != null) {
+            throw new BadRequestException(CLIENT_HAS_DELIVERIES);
+        }
         this.clientRepository.deleteById(id);
     }
 
@@ -78,6 +85,12 @@ public class ClientService {
         List<ClientEntity> clients = clientRepository.findAll().stream().collect(Collectors.toUnmodifiableList());
 
         return clients;
+    }
+
+    public ClientEntity getClientById(Long id) {
+        ClientEntity client = clientRepository.getReferenceById(id);
+
+        return client;
     }
 
 }    

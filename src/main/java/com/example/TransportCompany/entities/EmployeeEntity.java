@@ -1,5 +1,7 @@
 package com.example.TransportCompany.entities;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -36,6 +38,9 @@ public class EmployeeEntity {
 
     @Column(name = "vehicle_category")
     private String vehicleCategory;
+
+    @OneToOne(mappedBy = "driver")
+    private VehicleEntity vehicle;
 
     @OneToOne
     @JoinColumn(name = "company", nullable = false)
